@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Player {
     private int damage;
     private int health;
+    private int maxHealth;
     private int money;
     private String name;
     private String charName;
@@ -15,11 +16,11 @@ public class Player {
     }
 
     public void selectChar() {
-        GameChar[] charList = {new Samurai(), new Knight(), new Archer()};
+        GameChar[] charList = {new Samurai(), new Archer(), new Knight()};
 
         System.out.println("--------------------------------------------------------------");
         for (GameChar gameChar : charList) {
-            System.out.println("Karakter: " + gameChar.getName() + "\t Hasar: " + gameChar.getDamage() + " \t Sağlık: " + gameChar.getHealth() + " \t Para: " + gameChar.getMoney());
+            System.out.println(gameChar.getId() + "- Karakter: " + gameChar.getName() + "\t Hasar: " + gameChar.getDamage() + " \t Sağlık: " + gameChar.getHealth() + " \t Para: " + gameChar.getMoney());
         }
         System.out.println("--------------------------------------------------------------");
 
@@ -30,31 +31,23 @@ public class Player {
                 initPlayer(new Samurai());
                 break;
             case 2:
-                initPlayer(new Knight());
+                initPlayer(new Archer());
                 break;
             case 3:
-                initPlayer(new Archer());
+                initPlayer(new Knight());
                 break;
             default:
                 System.out.println("Geçersiz karakter seçtin samuray ile savaşacaksın ..!");
                 initPlayer(new Samurai());
                 break;
         }
-
-      /*
-
-      System.out.println("Karakter: " + this.getCharName() +
-                "\t Hasar: " + this.getDamage() +
-                " \t Sağlık: " + this.getHealth() +
-                " \t Para: " + this.getMoney());
-      */
-
     }
 
 
     public void initPlayer(GameChar gameChar) {
         this.setDamage(gameChar.getDamage());
         this.setHealth(gameChar.getHealth());
+        this.setMaxHealth(gameChar.getHealth());
         this.setMoney(gameChar.getMoney());
         this.setCharName(gameChar.getName());
     }
@@ -63,15 +56,19 @@ public class Player {
 
         System.out.println("Silah: " + this.getInventory().getWeapon().getName() +
                 " \t Zırh: " + this.getInventory().getArmor().getName() +
-                " \t Hasar: " + this.getDamage() +
+                " \t Hasar: " + this.getTotalDamage() +
                 " \t Block: " + this.getInventory().getArmor().getBlock() +
                 " \t Sağlık: " + this.getHealth() +
                 " \t Para: " + this.getMoney());
 
     }
 
-    public int getDamage() {
+    public int getTotalDamage() {
         return damage + this.getInventory().getWeapon().getDamage();
+    }
+
+    public int getDamage() {
+        return damage;
     }
 
     public void setDamage(int damage) {
@@ -83,7 +80,26 @@ public class Player {
     }
 
     public void setHealth(int health) {
+        if (health < 0) {
+            health = 0;
+        }
         this.health = health;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public Scanner getScan() {
+        return scan;
+    }
+
+    public void setScan(Scanner scan) {
+        this.scan = scan;
     }
 
     public int getMoney() {
@@ -117,4 +133,9 @@ public class Player {
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
     }
+
+    public boolean didWon() {
+        return this.getInventory().hasFood() && this.getInventory().hasFireWood() && this.getInventory().hasWater();
+    }
+
 }
