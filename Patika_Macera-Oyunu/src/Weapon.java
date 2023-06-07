@@ -15,7 +15,7 @@ public class Weapon {
 
         Weapon[] weaponList = new Weapon[3];
 
-        weaponList[0] = new Weapon("Tabanca", 1, 2, 1);
+        weaponList[0] = new Weapon("Tabanca", 1, 2, 25);
         weaponList[1] = new Weapon("Kılıç", 2, 3, 35);
         weaponList[2] = new Weapon("Tüfek", 3, 7, 45);
 
